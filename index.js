@@ -14,11 +14,26 @@ let states = {
  
 // map -> mapValues / mapKeys
 
+let stateArray = _.map(states, (element, index, wholeObject) => {
+    return element.density = element.population / element.size
+})
+
+
+
 // forEach -> forIn / forOwn,  
 
 // find
+let foundMovie = _.find(movies, {
+    year: '2006'
+
+})
 
 // groupBy
+
+let moviesByYear = _.groupBy(movies, 'year')
+let moviesByDecade = _.groupBy(movies, (movie) => {
+    return Math.floor(movie.year / 10) * 10
+})
 
 // union
 
@@ -45,9 +60,14 @@ let toddsDieties = ['Bane, god of tyranny',
                         'Helm, god of protection',
                         'Gond, god of craft', 
                         'Lathander, god of birth and renewal', 
-                        'Tyr, god of justice']
+                        'Tyr, god of justice'];
+
+let allDieties = _.union(bracksDieties, jeremysDieties, toddsDieties)
 
 // intersection
+
+let dinnerInvites = _.intersection(bracksDieties, jeremysDieties, toddsDieties)
+
 
 // memoize
 let slowFunction = function(n){
@@ -62,12 +82,41 @@ let slowFunction = function(n){
     return total;
 }
 
+let memFunction = _.memoize(slowFunction);
+
+console.time('slowFunc 1');
+slowFunction(100);
+console.timeEnd('slowFunc 1');
 
 // We can memoize API requests
 function getPerson(i){
     return axios.get('https://swapi.co/api/people/' + i)
 }
 
+console.time('api call1')
+getPerson(5).then(data => {
+    console.log(data.data)
+    console.timeEnd('api call1')
+})
+
 // Debounce
+
+function doStuff(a) {
+    console.log(a)
+}
+
+let debound = _.debounce(doStuff, 100);
+
+for (var i=0; i<50; i++) {
+    debound(i);
+}
+
+
 // Throttle
+
+let throttled = _.throttle(doStuff, 100)
+
+for(var i = 0; i< 50; i++) {
+    throttled(i);
+}
 
